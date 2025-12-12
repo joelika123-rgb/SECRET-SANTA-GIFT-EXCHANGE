@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Secret Friend Reveal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: #f4f7fb;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        background: white;
+        padding: 30px;
+        width: 90%;
+        max-width: 420px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    h2 {
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    input {
+        padding: 12px;
+        width: 100%;
+        margin-top: 15px;
+        border: 1px solid #bbb;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+
+    button {
+        padding: 12px;
+        width: 100%;
+        margin-top: 20px;
+        background: #4a77d4;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 17px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #3b63b1;
+    }
+
+    #result {
+        margin-top: 25px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #222;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Secret Friend Reveal</h2>
+    <p>Enter your name and PIN</p>
+
+    <input id="username" placeholder="Your Name (UPPERCASE)">
+    <input id="pin" type="password" placeholder="Your PIN">
+
+    <button onclick="revealFriend()">Reveal Friend</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+const members = {
+    "DOMINA": "4821",
+    "JENIPHER": "9375",
+    "MARIALETICIA": "5169",
+    "PASKALINA": "7024",
+    "EMMANUEL": "1843",
+    "ADAM": "6590",
+    "BATISTA": "2237",
+    "ASAJILE": "3986",
+    "GODFREY": "8712",
+    "FRANCIS": "1440",
+    "FREDRICK": "9034",
+    "GILBERT": "5778",
+    "JOEL": "2619",
+    "JOSEPH": "4452",
+    "MSAFIRI": "1108",
+    "KARIM": "6941",
+    "ONESMO": "5256",
+    "NICO": "7803",
+    "JESCA": "3362",
+    "MAJALIWA": "8629"
+};
+
+const names = Object.keys(members);
+
+function hashString(str) {
+    let h = 0;
+    for (let i = 0; i < str.length; i++)
+        h = (h * 31 + str.charCodeAt(i)) % 1000000007;
+    return h;
+}
+
+function revealFriend() {
+    const name = document.getElementById("username").value.trim().toUpperCase();
+    const pin = document.getElementById("pin").value.trim();
+
+    if (!members[name]) {
+        document.getElementById("result").innerHTML = "❌ Name not found";
+        return;
+    }
+    if (members[name] !== pin) {
+        document.getElementById("result").innerHTML = "❌ Incorrect PIN";
+        return;
+    }
+
+    const hash = hashString(name);
+    let index = hash % names.length;
+    if (names[index] === name) index = (index + 1) % names.length;
+
+    document.getElementById("result").innerHTML =
+        "🎁 Your secret friend is:<br><br><strong>" + names[index] + "</strong>";
+}
+</script>
+
+</body>
+</html>
